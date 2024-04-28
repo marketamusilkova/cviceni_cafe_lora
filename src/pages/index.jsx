@@ -43,3 +43,21 @@ document.querySelectorAll('nav > a').forEach((a) => {
     navigationElm.classList.add('nav-closed');
   });
 });
+
+document.querySelectorAll(".drink__controls").forEach((form) => {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const id = event.target.dataset.id;
+
+    await fetch(`http://localhost:4000/api/drinks/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([
+        { op: "replace", path: "/ordered", value: !drinks[id].ordered },
+      ]),
+    });
+    window.location.reload();
+  });
+});
